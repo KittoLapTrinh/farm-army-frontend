@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% set title = 'Farm & Liquidity Pools - Binance Smart Chain' %}
+{% set description = 'Searching and tracking farming and liqudify pools on Binance Smart Chain' %}
+
+{% block content %}
+    <div class="mt-4 pt-4 mx-auto text-center">
+        <p class="lead">Track your farming and pool performance on the <a target="_blank" class="text-decoration-none text-dark" href="https://www.binance.org/en/smartChain">Binance Smart Chain</a></p>
+    </div>
+
+    {% include 'components/address_form.html.twig' %}
+
+    <div class="mt-4 pt-4 border-top text-center">
+        {% for platform in platforms %}
+            <a class="p-1" href="{{ platform.url }}" title="{{ platform.label }}" target="_blank"><img loading="lazy" class="m-1" style="filter: grayscale(30%);" height="32" src="{{ asset(platform.icon) }}" alt="{{ platform.id }}"></a>
+        {% endfor %}
+    </div>
+
+    <div class="mt-4 pt-4 border-top text-center">
+        <h2>Farm & Pools</h2>
+    </div>
+
+    <div class="container text-center">
+        <a class="p-2 text-dark btn btn-outline-primary" href="{{ path('pools') }}"><i class="fas fa-fire text-danger"></i> Show All Pools And Vaults</a>
+    </div>
+
+    <div class="mt-4 pt-4 border-top">
+        {% if new|default([])|length > 0 %}
+            <h3 class="text-center">New Arrivals</h3>
+
+            <div class="container text-center pb-3">
+                <a href="{{ path('arrivals') }}" class="text-decoration-none">Show Timeline</a>
+            </div>
+
+            {% for farms in new|batch(2) %}
+                <div class="row">
+
+                    {% for farm in farms %}
+                        <div class="col-12 col-lg-6">
+                            {{ farm.content|raw }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if tvl|default([])|length > 0 %}
+            <h3 class="p-2 pt-5  text-center">Top TVL</h3>
+            {% for farms in tvl|batch(2) %}
+                <div class="row">
+                    {% for farm in farms %}
+                        <div class="col-12 col-lg-6">
+                            {{ farm.content|raw }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
